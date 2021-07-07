@@ -1,0 +1,91 @@
+﻿<Window x:Class="WPFFourier_Plotter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFFourier_Plotter"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Title="Fourier Plotter" WindowState="Maximized" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="buttonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Height"  Value="20"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Menu HorizontalAlignment="Stretch">
+            <MenuItem Header="_File" >
+                <MenuItem Header="New" Click="New_Click"/>
+                <MenuItem Header="Open" Click="Open_Click"/>
+                <MenuItem Header="Save" Click="Save_Click"/>
+            </MenuItem>
+
+            <MenuItem Name="exitMenuItem" Header="_Exit" Click="exitMenuItem_Click" />
+            
+            <MenuItem Name="optionMenuItem" Header="_Options">
+                <MenuItem Header="Draw Circle" IsCheckable="True" IsChecked="True" Checked="Circle_Checked" Unchecked="Circle_Unchecked"/>
+                <MenuItem Header="Draw Line" IsCheckable="True" IsChecked="True" Checked="Line_Checked" Unchecked="Line_Unchecked"/>
+            </MenuItem>
+        </Menu>
+        
+        <Grid Grid.Row="1">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80*"/>
+                <ColumnDefinition Width="20*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="85*"/>
+                <RowDefinition Height="15*"/>
+            </Grid.RowDefinitions>
+            
+            <GroupBox Name="plotterGroupBox" Header="Plotter">
+                <GroupBox.Content>
+                    <Canvas x:Name="plotterCanvas"/>
+                </GroupBox.Content>
+            </GroupBox>
+            
+            <GroupBox Header="Circles" Grid.Column="1">
+                <DataGrid Name="dataGridInfo" ItemsSource="{Binding}" AutoGenerateColumns="False" CurrentCellChanged="dataGridInfo_CurrentCellChanged" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Radius" Width="Auto" Binding="{Binding radius}"/>
+                        <DataGridTextColumn Header="Frequency" Width="Auto" Binding="{Binding frequency}"/>
+                        <DataGridTextColumn Header=" " Width=" *"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+
+            <ProgressBar Name="progressBar" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="20" ValueChanged="progressBar_ValueChanged" Minimum="0" Maximum="600"/>
+
+            <GroupBox x:Name="actionGroupBox" Grid.Column="1" Grid.Row="1" Header="Actions" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StackPanel Orientation="Vertical">
+                    <Button x:Name="startButton" Content=" Start" Style="{StaticResource buttonStyle}" Click="startButton_Click"/>
+                    <Button x:Name="pauseButton" Content=" Pause" Style="{StaticResource buttonStyle}" Click="pauseButton_Click"/>
+                    <Button x:Name="restartButton" Content=" Reset" Style="{StaticResource buttonStyle}" Click="restartButton_Click"/>
+                    <!--<StackPanel.Triggers>
+                        <EventTrigger SourceName="startButton" RoutedEvent="Button.Click">
+                            <BeginStoryboard Name="progressBarBeginStoryBoard">
+                                <Storyboard Name="progressBarStoryBoard">
+                                    <DoubleAnimation Storyboard.TargetName="progressBar" Storyboard.TargetProperty="Value" From="0" To="100" Duration="0:0:10"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger SourceName="pauseButton" RoutedEvent="Button.Click">
+                            <PauseStoryboard BeginStoryboardName="progressBarBeginStoryBoard"/>
+                        </EventTrigger>
+                        <EventTrigger SourceName="restartButton" RoutedEvent="Button.Click">
+                            <RemoveStoryboard BeginStoryboardName="progressBarBeginStoryBoard"/>
+                        </EventTrigger>
+                    </StackPanel.Triggers>-->
+                </StackPanel>
+            </GroupBox>
+            
+        </Grid>
+    </Grid>
+</Window>
